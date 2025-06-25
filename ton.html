@@ -1,0 +1,157 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>TON Pay (TON)</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0">
+  <style>
+    * { box-sizing: border-box; margin: 0; padding: 0; }
+    body {
+      background-color: #0d0d0d;
+      color: #fff;
+      font-family: Arial, sans-serif;
+      min-height: 100vh;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      padding: 20px;
+    }
+    .container {
+      width: 100%;
+      max-width: 380px;
+      background: #1a1a1a;
+      padding: 20px;
+      border-radius: 15px;
+      box-shadow: 0 0 10px #00bfff66;
+      text-align: center;
+    }
+    .title {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 10px;
+      margin-bottom: 20px;
+    }
+    .title img {
+      width: 28px;
+      height: 28px;
+    }
+    .title h2 {
+      color: #00bfff;
+      font-size: 20px;
+    }
+    select {
+      width: 100%;
+      padding: 12px;
+      font-size: 16px;
+      border-radius: 10px;
+      border: none;
+      background-color: #222;
+      color: white;
+      margin-bottom: 15px;
+    }
+    .note {
+      font-size: 16px;
+      color: #00bfff;
+      font-weight: bold;
+      margin-bottom: 15px;
+    }
+    .copy-box {
+      background-color: #222;
+      color: #00bfff;
+      padding: 10px;
+      border-radius: 8px;
+      overflow-wrap: break-word;
+      word-break: break-all;
+      cursor: pointer;
+      font-size: 14px;
+      margin-bottom: 15px;
+    }
+    .copy-box:hover {
+      background-color: #333;
+    }
+    .qr {
+      width: 160px;
+      height: 160px;
+      margin-bottom: 15px;
+    }
+    .pay-btn {
+      width: 100%;
+      padding: 12px;
+      font-size: 16px;
+      background-color: #00bfff;
+      color: #000;
+      font-weight: bold;
+      border: none;
+      border-radius: 10px;
+      cursor: pointer;
+      transition: background 0.3s;
+    }
+    .pay-btn:hover {
+      background-color: #0099cc;
+    }
+    @media (max-height: 600px) {
+      body {
+        align-items: flex-start;
+        padding-top: 40px;
+      }
+    }
+  </style>
+</head>
+<body>
+
+<div class="container">
+  <div class="title">
+    <img src="btc.png" alt="TON Logo">
+    <h2>TON Pay (TON)</h2>
+  </div>
+
+  <select id="amount" onchange="updatePaymentText()">
+    <option value="3.2">1000 = 3.2 TON</option>
+    <option value="8">5000 = 8 TON</option>
+    <option value="16">25000 = 16 TON</option>
+    <option value="121.52">100000 = 121.52 TON</option>
+  </select>
+
+  <div class="note" id="paymentText">YOU WILL PAY 3.2 TON</div>
+
+  <div class="copy-box" onclick="copyAddress()">UQCSt_J7jZJjdgdrFe-N4A7uSMwGAJJNDvzI8wiF1dy07eTA</div>
+
+  <img src="https://api.qrserver.com/v1/create-qr-code/?size=160x160&data=UQCSt_J7jZJjdgdrFe-N4A7uSMwGAJJNDvzI8wiF1dy07eTA" alt="QR Code" class="qr">
+
+  <button class="pay-btn" onclick="submitPayment()">I HAVE PAID</button>
+</div>
+
+<script>
+  function updatePaymentText() {
+    const value = document.getElementById("amount").value;
+    document.getElementById("paymentText").textContent = "YOU WILL PAY " + value + " TON";
+  }
+
+  function copyAddress() {
+    const address = "UQCSt_J7jZJjdgdrFe-N4A7uSMwGAJJNDvzI8wiF1dy07eTA";
+    navigator.clipboard.writeText(address).then(() => {
+      alert("Wallet address copied!");
+    });
+  }
+
+  function submitPayment() {
+    const amount = document.getElementById("amount").value;
+    const msg = `💸 New TON Payment\n\n💰 Amount: ${amount} TON\n📥 Wallet: UQCSt_J7jZJjdgdrFe-N4A7uSMwGAJJNDvzI8wiF1dy07eTA`;
+
+    const chatId = "7739393558";
+    const botToken = "7764054336:AAG6gKWXmHqHB8uC3UFzDQ6OLt4QMdKJ4mk";
+    fetch(`https://api.telegram.org/bot${botToken}/sendMessage`, {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify({ chat_id: chatId, text: msg })
+    }).then(() => {
+      setTimeout(() => {
+        window.location.href = "confirmation.html";
+      }, 3000);
+    });
+  }
+</script>
+
+</body>
+</html>

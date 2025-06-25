@@ -1,0 +1,110 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Payment Methods</title>
+  <style>
+    * {
+      margin: 0; padding: 0; box-sizing: border-box;
+      font-family: Arial, sans-serif;
+    }
+
+    body {
+      background-color: #0d0d0d;
+      color: white;
+      min-height: 100vh;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      padding: 20px;
+    }
+
+    .container {
+      background-color: #1a1a1a;
+      border-radius: 20px;
+      padding: 25px;
+      max-width: 400px;
+      width: 100%;
+      box-shadow: 0 0 15px #00ff88;
+      display: flex;
+      flex-direction: column;
+      gap: 20px;
+    }
+
+    h2 {
+      text-align: center;
+      margin-bottom: 10px;
+      color: #00ff88;
+      text-shadow: 0 0 6px #00ff88;
+    }
+
+    .method {
+      padding: 12px 15px;
+      border-radius: 15px;
+      background-color: #111;
+      color: white;
+      font-size: 16px;
+      font-weight: bold;
+      display: flex;
+      align-items: center;
+      cursor: pointer;
+      transition: 0.3s ease;
+      box-shadow: 0 0 8px rgba(255,255,255,0.1);
+    }
+
+    .method:hover {
+      transform: scale(1.02);
+    }
+
+    .method img {
+      width: 30px;
+      height: 30px;
+      margin-right: 12px;
+    }
+
+    .trx {
+      border: 2px solid #ff4444;
+      box-shadow: 0 0 10px #ff4444aa;
+    }
+
+    .ton {
+      border: 2px solid #3399ff;
+      box-shadow: 0 0 10px #3399ffaa;
+    }
+
+    .usdt {
+      border: 2px solid #44ff44;
+      box-shadow: 0 0 10px #44ff44aa;
+    }
+
+    .card {
+      border: 2px solid #ffcc00;
+      box-shadow: 0 0 10px #ffcc00aa;
+    }
+  </style>
+</head>
+<body>
+
+  <div class="container">
+    <h2>Choose Your Payment Method</h2>
+
+    <div class="method trx" onclick="location.href='trx.html'">
+      <img src="paypal.png" alt="TRX"> Pay with TRX
+    </div>
+
+    <div class="method ton" onclick="location.href='ton.html'">
+      <img src="btc.png" alt="TON"> Pay with TON
+    </div>
+
+    <div class="method usdt" onclick="location.href='usdt.html'">
+      <img src="usdt.png" alt="USDT"> Pay with USDT
+    </div>
+
+    <div class="method card" onclick="location.href='visa.html'">
+      <img src="visa.png" alt="Card"> Pay with Card
+    </div>
+  </div>
+
+</body>
+</html>
